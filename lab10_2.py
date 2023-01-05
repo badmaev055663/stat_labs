@@ -7,10 +7,8 @@ def generate_data(n: int, a: float, b: float) -> tuple:
     x = np.sort(x)
     y = np.zeros(n)
     for i in range(n):
-        y[i] = a + b * x[i] + eps[i] * (1.08**i)
+        y[i] = a + b * x[i] + eps[i] * (1.06**i)
     return (x, y)
-
-x, y = generate_data(n=30, a=10, b=3)
 
 
 def get_stats(x: np.ndarray, y: np.ndarray) -> tuple:
@@ -28,11 +26,12 @@ def get_stats(x: np.ndarray, y: np.ndarray) -> tuple:
 def Golfeld_test(x: np.ndarray, y: np.ndarray, m: int, alpha: float):
     n = np.size(x)
     k = int((n - m) / 2)
+    k2 = int((n + m) / 2)
     x1 = x[0: k + 1]
     y1 = y[0: k + 1]
 
-    x2 = x[k - 1:]
-    y2 = y[k - 1:]
+    x2 = x[k2 - 1:]
+    y2 = y[k2 - 1:]
 
     S1, a1, b1 = get_stats(x1, y1)
     S2, a2, b2 = get_stats(x2, y2)
@@ -60,5 +59,6 @@ def Golfeld_test(x: np.ndarray, y: np.ndarray, m: int, alpha: float):
    
 
 # https://studfile.net/preview/7431649/
-
+np.set_printoptions(precision=2)
+x, y = generate_data(n=30, a=10, b=3)
 Golfeld_test(x, y, m=8, alpha=0.05)
