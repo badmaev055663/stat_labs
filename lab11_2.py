@@ -36,6 +36,14 @@ def plot_error(e: np.ndarray, n: int):
     plt.show()
 
 
+def plot_simple(data: np.ndarray,  n: int, label: str):
+    t = np.arange(start=1, stop=n+1)
+    plt.title(label)
+    plt.plot(t, data, color = "b")
+    plt.xlabel('t')
+    plt.ylabel('y')
+    plt.show()
+
 def stats(y: np.ndarray, f1: np.ndarray, f2: np.ndarray, T: int):
     n = np.size(y)
     t = np.arange(n) + 1 
@@ -47,6 +55,8 @@ def stats(y: np.ndarray, f1: np.ndarray, f2: np.ndarray, T: int):
 
     m = int(n / T)
     season = y - tr
+
+    plot_simple(season, n, label="без тренда")
     S = np.zeros(T)
     j = 0
     for i in range(n):

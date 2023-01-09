@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def generate_data(n: int) -> tuple:
-    eps1 = np.random.normal(loc=0, scale=1.5, size=n)
-    eps2 = np.random.normal(loc=0, scale=1.5, size=n)
-    eps3 = np.random.normal(loc=0, scale=1.5, size=n)
+    eps1 = np.random.normal(loc=0, scale=2.0, size=n)
+    eps2 = np.random.normal(loc=0, scale=2.0, size=n)
+    eps3 = np.random.normal(loc=0, scale=2.0, size=n)
 
     y1 = np.zeros(n)
     y2 = np.zeros(n)
@@ -19,20 +19,21 @@ def generate_data(n: int) -> tuple:
     y3[29] = 500 + eps3[29]
     return (y1, y2, y3)
 
-def plot_time_series(y1: np.ndarray, y2: np.ndarray, y3: np.ndarray, label: str, shift: int = 1):
-    t = np.arange(np.size(y1)) + shift
-    fig, (plot1, plot2, plot3) = plt.subplots(1, 3, figsize=(10, 4))
-    fig.suptitle('Ряды: ' + label)
-    plot1.set_ylabel('Значения ряда')
-    plot1.plot(t, y1, color = "r")
-    plot1.set_xlabel('ряд y1')
+def plot_time_series(data: list, label: str):
+    size = len(data1)
     
-    plot2.plot(t, y2, color = "g")
-    plot2.set_xlabel('ряд y2')
-
-    plot3.plot(t, y3, color = "b")
-    plot3.set_xlabel('ряд y3')
-   
+    plt.xlabel('t')
+    plt.ylabel('Значения ряда y')
+    labels = ["исх.", "g=3", "g=4", "g=5", "взвеш.", "мед."]
+    shift = 1
+    for i in range(size):
+        t = np.arange(np.size(data[i])) + shift
+        if i == 0 or i == 1:
+            shift += 1
+        plt.plot(t, data[i], label=labels[i])
+    plt.title(label)
+    plt.legend(loc='upper left')
+ 
     plt.show()
 
 def plot_error(e1: np.ndarray, e2: np.ndarray, e3: np.ndarray, n: int, label: str):
@@ -122,12 +123,14 @@ e2_m = get_errors(y2, y2_m, n)
 e3_m = get_errors(y3, y3_m, n)
 
 
-plot_time_series(y1, y2, y3, label="исходные")
-plot_time_series(y1_3, y2_3, y3_3, label="сглаживание g=3", shift=2)
-plot_time_series(y1_4, y2_4, y3_4, label="сглаживание g=4", shift=3)
-plot_time_series(y1_5, y2_5, y3_5, label="сглаживание g=5", shift=3)
-plot_time_series(y1_w, y2_w, y3_w, label="сглаживание взвеш g=5", shift=3)
-plot_time_series(y1_m, y2_m, y3_m, label="сглаживание медианное g=4", shift=3)
+data1 = [y1, y1_3, y1_4, y1_5, y1_w, y1_m]
+plot_time_series(data1, label="y1")
+
+data2 = [y2, y2_3, y2_4, y2_5, y2_w, y2_m]
+plot_time_series(data2, label="y2")
+
+data3 = [y3, y3_3, y3_4, y3_5, y3_w, y3_m]
+plot_time_series(data3, label="y3")
 
 plot_error(e1_3, e2_3, e3_3, n, label="сглаживание g=3")
 plot_error(e1_4, e2_4, e3_4, n, label="сглаживание g=4")
